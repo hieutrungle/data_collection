@@ -1,0 +1,80 @@
+version: '3'
+services:
+  # portainer:
+  #   image: portainer/portainer-ce
+  #   container_name: portainer
+  #   restart: always
+  #   ports:
+  #     - "9000:9000/tcp"
+  #   environment:
+  #     - TZ=America/Chicago
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - portainer-data:/data
+
+  # homeassistant:
+  #   image: "ghcr.io/home-assistant/home-assistant:stable"
+  #   container_name: homeassistant
+  #   # the default port of home assistant is:
+  #   #   - 8123:8123
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - influxdb
+  #     - mosquitto
+  #   privileged: true
+  #   network_mode: host
+  #   volumes:
+  #     - ./opt/homeassistant/config:/config
+  #     - /etc/localtime:/etc/localtime:ro
+
+  # grafana:
+  #   image: grafana/grafana
+  #   container_name: grafana
+  #   restart: always
+  #   depends_on:
+  #     - influxdb
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+  #     - GF_SECURITY_ALLOW_EMBEDDING=true
+  #   volumes:
+  #     - grafana-data:/var/lib/grafana
+  #     - ./opt/grafana/grafana.ini:/etc/grafana/grafana.ini
+  #     - ./opt/grafana/logs:/var/log/grafana
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./opt/mosquitto/config:/mosquitto/config
+      - ./opt/mosquitto/log:/mosquitto/log
+      - mqtt-data:/mosquitto/data
+  # influxdb:
+  #   image: influxdb:2.6
+  #   container_name: influxdb
+  #   restart: always
+  #   ports:
+  #     - "8086:8086/tcp"
+  #   volumes:
+  #     - influxdb:/var/lib/influxdb2
+  #     - ./opt/influxdb/config.yml:/etc/influxdb2/config.yml
+
+  # nodered:
+  #   image: nodered/node-red
+  #   container_name: nodered
+  #   ports:
+  #     - "1880:1880/tcp"
+  #   volumes:
+  #     - nodered-data:/data
+
+volumes:
+  # portainer-data:
+  mqtt-data:
+  # influxdb:
+  # nodered-data:
+  # grafana-data:
